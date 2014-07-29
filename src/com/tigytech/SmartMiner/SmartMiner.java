@@ -59,7 +59,7 @@ public class SmartMiner {
 	
 	public static void main(String[] args) {
 		try {
-			ArrayList<URL> url = parseURL(new URL("http://www.thebacklot.com/"));
+			ArrayList<URL> url = parseURL(new URL(""));
 			for (URL u : url) System.out.println(u.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
