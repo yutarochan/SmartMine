@@ -5,8 +5,12 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
+import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.util.VertexPair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,10 +34,16 @@ public class SmartMiner {
 		
 		Elements linkList = doc.getElementsByTag("a");
 		for (Element e : linkList) {
-			if (e.attr("href").contains(baseURL.toString()))
-				urlList.add(new URL(e.attr("href")));
-			else if (e.attr("href").startsWith("/"))
-				urlList.add(new URL(baseURL.toString() + e.attr("href").substring(1)));
+			String link = e.attr("href").toString();
+			
+			try {
+				if (!urlList.contains(new URL(link))) {
+					if (e.attr("href").contains(baseURL.toString()))
+						urlList.add(new URL(e.attr("href")));
+					else if (e.attr("href").startsWith("/"))
+						urlList.add(new URL(baseURL.toString() + e.attr("href").substring(1)));
+				}
+			} catch (Exception ex) {}
 		}
 		return urlList;
 	}
@@ -57,14 +67,20 @@ public class SmartMiner {
 		return text_data;
 	}
 	
+	// TODO: Expand this out as another class.
+	private static SimpleDirectedGraph<Object, DefaultEdge> buildPageTree(String html) {
+		return null;
+	}
+	
 	public static void main(String[] args) {
 		try {
-			ArrayList<URL> url = parseURL(new URL(""));
+			/*
+			ArrayList<URL> url = parseURL(new URL("http://www.620wtmj.com/"));
 			for (URL u : url) System.out.println(u.toString());
+			*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 }
