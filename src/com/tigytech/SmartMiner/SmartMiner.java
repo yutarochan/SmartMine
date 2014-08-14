@@ -1,20 +1,15 @@
 package com.tigytech.SmartMiner;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
 
-import org.jgraph.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.util.VertexPair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.tigytech.SmartMiner.util.FileUtil;
 
 public class SmartMiner {
 	
@@ -29,7 +24,7 @@ public class SmartMiner {
 	private static ArrayList<URL> parseURL(URL baseURL) throws Exception {
 		ArrayList<URL> urlList = new ArrayList<URL>();
 		
-		String data = getPage(baseURL.toString());
+		String data = FileUtil.getSource(baseURL.toString());
 		Document doc = Jsoup.parse(data);
 		
 		Elements linkList = doc.getElementsByTag("a");
@@ -46,30 +41,6 @@ public class SmartMiner {
 			} catch (Exception ex) {}
 		}
 		return urlList;
-	}
-	
-	private static String getPage(String url) throws Exception {
-		String cmd = "wget -O " + "data.txt" + " " + url;
-		Process process = Runtime.getRuntime().exec(cmd);
-		
-		BufferedReader r = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String data = "";
-		while ((data = r.readLine()) != null) System.out.println(data + "\n");
-		
-		process.waitFor();
-		
-		String text_data = "";
-		File f = new File(APP_DIR + "/data.txt");
-		Scanner sc = new Scanner(f);
-		while (sc.hasNextLine()) text_data += sc.nextLine();
-		f.delete();
-		
-		return text_data;
-	}
-	
-	// TODO: Expand this out as another class.
-	private static SimpleDirectedGraph<Object, DefaultEdge> buildPageTree(String html) {
-		return null;
 	}
 	
 	public static void main(String[] args) {
